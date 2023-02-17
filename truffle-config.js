@@ -45,6 +45,8 @@ require('dotenv').config();
 const { MNEMONIC, PROJECT_ID } = process.env;
 
 const HDWalletProvider = require('@truffle/hdwallet-provider');
+const BSC_RPC_URL = "https://endpoints.omniatech.io/v1/bsc/testnet/public"
+const POLYGON_RPC_URL = "https://matic-mumbai.chainstacklabs.com"
 
 module.exports = {
   /**
@@ -59,7 +61,7 @@ module.exports = {
 
   networks: {
     bsc_test: {
-      provider: () => new HDWalletProvider(MNEMONIC, `https://bsc-testnet.public.blastapi.io`),
+      provider: () => new HDWalletProvider(MNEMONIC, BSC_RPC_URL),
       network_id: 97,       // Any network (default: none)
       gasPrice: 10000000000,  // 10 gwei (in wei) (default: 100 gwei)
       confirmations: 2,    // # of confirmations to wait between deployments. (default: 0)
@@ -67,8 +69,24 @@ module.exports = {
       skipDryRun: true
     },
     bsc_main: {
-      provider: () => new HDWalletProvider(MNEMONIC, `https://bsc-testnet.public.blastapi.io`),
+      provider: () => new HDWalletProvider(MNEMONIC, BSC_RPC_URL),
       network_id: 56,       // Any network (default: none)
+      gasPrice: 5000000000,  // 5 gwei (in wei) (default: 100 gwei)
+      confirmations: 2,    // # of confirmations to wait between deployments. (default: 0)
+      timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
+      skipDryRun: true
+    },
+    polygon_test: {
+      provider: () => new HDWalletProvider(MNEMONIC, POLYGON_RPC_URL),
+      network_id: 80001,       // Any network (default: none)
+      gasPrice: 10000000000,  // 10 gwei (in wei) (default: 100 gwei)
+      confirmations: 2,    // # of confirmations to wait between deployments. (default: 0)
+      timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
+      skipDryRun: true
+    },
+    polygon_main: {
+      provider: () => new HDWalletProvider(MNEMONIC, POLYGON_RPC_URL),
+      network_id: 137,       // Any network (default: none)
       gasPrice: 5000000000,  // 5 gwei (in wei) (default: 100 gwei)
       confirmations: 2,    // # of confirmations to wait between deployments. (default: 0)
       timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)

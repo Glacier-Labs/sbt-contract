@@ -3,17 +3,18 @@ var Tx = require('ethereumjs-tx');
 var Web3 = require('web3');
 
 //发起者，需要有私钥
-const my_addr = "0xF137A872E438fc550745005646ADD965D47D2cF3";
-const privateKey = "0xca0c633ca5e49731e2788f6e867587b88580e91b00bead3efb09bcb8bb56d738"
+const my_addr = "0xBC06E4830513078a1B0f276ca9bd5fCB09d2778A";
+const privateKey = "0x371c5e48eac2992385ac9adfcf52fc17fe0e926dbc72302908f5bc0852869f32"
 const to_addr = "0x94101cB45019002D2E6ca599bEACFfd1d47A31E4"
 
-var web3 = new Web3(new Web3.providers.HttpProvider("https://endpoints.omniatech.io/v1/bsc/testnet/public"));
+//const RPC_URL = "https://endpoints.omniatech.io/v1/bsc/testnet/public"
+const RPC_URL = "https://matic-mumbai.chainstacklabs.com"
+var web3 = new Web3(new Web3.providers.HttpProvider(RPC_URL));
 var utils = web3.utils;
 var eth = web3.eth;
 
-const gas_limit = '60000'
-const gas_price = '10.0' //gwei
-const send_value = utils.toWei('0.48', 'ether');
+const gas_limit = '40000'
+const send_value = utils.toWei('0.19', 'ether');
 
 async function main () {
     await SendValue(to_addr, send_value);

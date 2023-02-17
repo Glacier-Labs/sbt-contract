@@ -3,7 +3,8 @@ const path = require('path');
 const Web3 = require('web3');
 const EthereumTx = require('ethereumjs-tx').Transaction
 
-const RPC_URL = "https://endpoints.omniatech.io/v1/bsc/testnet/public"
+//const RPC_URL = "https://endpoints.omniatech.io/v1/bsc/testnet/public"
+const RPC_URL = "https://matic-mumbai.chainstacklabs.com"
 var web3 = new Web3(new Web3.providers.HttpProvider(RPC_URL));
 var utils = web3.utils;
 var eth = web3.eth;
