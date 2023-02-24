@@ -3,5 +3,5 @@
 const SBT = artifacts.require("SBT");
 
 module.exports = function(deployer) {
-    deployer.deploy(SBT, "TriSBT", "TSBT", "http://localhost/");
+    deployer.deploy(SBT, "GlacierSBT", "GSBT", "http://localhost/");
 };
