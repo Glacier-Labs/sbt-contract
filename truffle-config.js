@@ -46,7 +46,8 @@ const { MNEMONIC, PROJECT_ID } = process.env;
 
 const HDWalletProvider = require('@truffle/hdwallet-provider');
 const BSC_RPC_URL = "https://endpoints.omniatech.io/v1/bsc/testnet/public"
-const POLYGON_RPC_URL = "https://matic-mumbai.chainstacklabs.com"
+const POLYGON_TEST_RPC_URL = "https://matic-mumbai.chainstacklabs.com"
+const POLYGON_RPC_URL = "https://polygon.llamarpc.com"
 
 module.exports = {
   /**
@@ -77,7 +78,7 @@ module.exports = {
       skipDryRun: true
     },
     polygon_test: {
-      provider: () => new HDWalletProvider(MNEMONIC, POLYGON_RPC_URL),
+      provider: () => new HDWalletProvider(MNEMONIC, POLYGON_TEST_RPC_URL),
       network_id: 80001,       // Any network (default: none)
       gasPrice: 10000000000,  // 10 gwei (in wei) (default: 100 gwei)
       confirmations: 2,    // # of confirmations to wait between deployments. (default: 0)
@@ -87,7 +88,7 @@ module.exports = {
     polygon_main: {
       provider: () => new HDWalletProvider(MNEMONIC, POLYGON_RPC_URL),
       network_id: 137,       // Any network (default: none)
-      gasPrice: 5000000000,  // 5 gwei (in wei) (default: 100 gwei)
+      gasPrice: 200000000000,  // 200 gwei (in wei) (default: 100 gwei)
       confirmations: 2,    // # of confirmations to wait between deployments. (default: 0)
       timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
       skipDryRun: true
@@ -140,7 +141,13 @@ module.exports = {
   // Configure your compilers
   compilers: {
     solc: {
-      version: "0.8.17" // Fetch exact version from solc-bin (default: truffle's version)
+      version: "0.8.17", // Fetch exact version from solc-bin (default: truffle's version)
+      settings: {          // See the solidity docs for advice about optimization and evmVersion
+       optimizer: {
+         enabled: true,
+         runs: 200
+       },
+      }
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
       // settings: {          // See the solidity docs for advice about optimization and evmVersion
       //  optimizer: {
