@@ -4,6 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "compile": "npx truffle compile",
+    "migrate": "npx truffle migrate",
+    "mint": "node sbt_mint.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
