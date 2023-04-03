@@ -14,8 +14,10 @@
   "license": "ISC",
   "dependencies": {
     "@truffle/hdwallet-provider": "^2.1.6",
-    "truffle": "^5.7.5",
-    "csv-parse": "^4.16.3"
+    "bip39": "^3.1.0",
+    "csv-parse": "^4.16.3",
+    "ethereumjs-wallet": "^1.0.2",
+    "truffle": "^5.7.5"
   },
   "devDependencies": {
     "@openzeppelin/contracts": "~4.7.2",

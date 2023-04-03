@@ -1,9 +1,13 @@
 const fs = require('fs');
 const path = require('path');
 const Web3 = require('web3');
+const bip39 = require('bip39');
+const { hdkey } = require('ethereumjs-wallet')
 const csv_parse = require('csv-parse/lib/sync');
 const SBT = require('./abi/SBT.json');
+require('dotenv').config();
 
+const MNEMONIC = process.env.MNEMONIC || "";
 const CSV_AIRDROP = path.join(__dirname, './', 'airdrop.csv');
 const POLYGON_TEST_RPC_URL = "https://matic-mumbai.chainstacklabs.com"
 const POLYGON_RPC_URL = "https://polygon.llamarpc.com"
@@ -11,13 +15,18 @@ var web3 = new Web3(new Web3.providers.HttpProvider(POLYGON_RPC_URL));
 var utils = web3.utils;
 var eth = web3.eth;
 
-// gas
+// Derive owner address
+const hdwallet = hdkey.fromMasterSeed(bip39.mnemonicToSeedSync(MNEMONIC));
+const xnode = hdwallet.derivePath("m/44'/60'/0'/0");
+const my_addr = xnode.deriveChild(0).getWallet().getChecksumAddressString();
+const privateKey = xnode.deriveChild(0).getWallet().getPrivateKeyString();
+// Contract address
+const sbt_addr = '0xa2315a9d91dA9D572d14030A2252C5cf204f4330'
+// Gas config
 const gas_limit = '200000'; //39000
-// Contract owner
-const my_addr = "0x94101cB45019002D2E6ca599bEACFfd1d47A31E4";
-const privateKey = "0xa6294cbff2ccd7c9515f13d746705635fe1fbd2197cfacc00a8375a11daf93b1"
-const sbt_addr = '0x51fBa95412769A18281baa45D79031d29B856526'
+const gas_price = utils.toWei('125', 'gwei');
 
+// Derive contract instance
 const sbt_con = new eth.Contract(SBT.abi, sbt_addr);
 
 async function mint() {
@@ -49,9 +58,17 @@ async function mint() {
 
 }
 
+async function GetBalance(addr) {
+    let val = await sbt_con.methods.balanceOf(addr).call().catch(console.error);
+    return val
+}
+
 async function mints(accounts) {
-    let tokenId = 1
+    let tokenId = 1232
     for (const addr of accounts) {
+        let val = await GetBalance(addr);
+        if (val > 0) continue;
+
         var abidata = sbt_con.methods.safeMint(addr, tokenId).encodeABI();
         var rawTx = {
             from: my_addr,
@@ -79,10 +96,10 @@ async function mints(accounts) {
             console.log(`err break`);
             break;
         }
-        
+
         tokenId += 1;
     }
-    
+
 }
 
 async function main() {
@@ -96,7 +113,7 @@ async function main() {
 
     let accounts = [];
     const records = csv_parse(fileContent, { columns: false });
-    console.log(`${records.length}`)
+    //console.log(`${records.length}`)
     for (let entry of records) {
         let addr = entry[0]
         if (utils.isAddress(addr)) {
@@ -107,13 +124,11 @@ async function main() {
         }
     }
 
+    //console.log(`${accounts}`)
+    console.log(`${accounts.length}`)
     //await mint();
     await mints(accounts);
 }
 
 
 main().catch(console.error).finally(() => process.exit());
-
-
-
-
